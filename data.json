@@ -1,0 +1,54 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "description": "Projeto sistema cliente",
+      "type": "receita",
+      "category": "Serviços",
+      "amount": 1500,
+      "date": "2026-08-20"
+    },
+    {
+      "id": 2,
+      "description": "Mensalidade cliente",
+      "type": "receita",
+      "category": "Serviços",
+      "amount": 149,
+      "date": "2026-08-22"
+    },
+    {
+      "id": 3,
+      "description": "Hospedagem e domínio",
+      "type": "despesa",
+      "category": "Infraestrutura",
+      "amount": 89.9,
+      "date": "2026-08-23"
+    },
+    {
+      "id": 4,
+      "description": "Ferramentas digitais",
+      "type": "despesa",
+      "category": "Assinaturas",
+      "amount": 120,
+      "date": "2026-08-25"
+    }
+  ],
+  "goals": [
+    {
+      "id": 1,
+      "label": "Meta de receita mensal",
+      "type": "receita-mensal",
+      "target": 3000,
+      "current": 1649,
+      "deadline": "Agosto/2026"
+    },
+    {
+      "id": 2,
+      "label": "Reserva da empresa",
+      "type": "reserva",
+      "target": 5000,
+      "current": 850,
+      "deadline": "Dezembro/2026"
+    }
+  ]
+}

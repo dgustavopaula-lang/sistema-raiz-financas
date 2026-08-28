@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Painel de finanças pessoais e empresariais do Gustavo." />
+  <title>Gustavo Finanças | Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div>
+        <p class="eyebrow">GPS.dev</p>
+        <h1>Gustavo Finanças</h1>
+        <p class="sidebar-copy">Painel simples para controlar receitas, despesas, metas e fluxo financeiro.</p>
+      </div>
+
+      <nav class="menu">
+        <button class="menu-item active" data-section="dashboard">Dashboard</button>
+        <button class="menu-item" data-section="lancamentos">Lançamentos</button>
+        <button class="menu-item" data-section="metas">Metas</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span id="storageStatus">Dados locais ativos</span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Finanças pessoais + empresa</p>
+          <h2 id="pageTitle">Visão geral</h2>
+        </div>
+        <button class="primary-button" id="newTransactionButton">+ Novo lançamento</button>
+      </header>
+
+      <section id="dashboard" class="page-section active">
+        <div class="summary-grid">
+          <article class="summary-card">
+            <span>Saldo atual</span>
+            <strong id="balanceValue">R$ 0,00</strong>
+          </article>
+          <article class="summary-card">
+            <span>Receitas</span>
+            <strong id="incomeValue">R$ 0,00</strong>
+          </article>
+          <article class="summary-card">
+            <span>Despesas</span>
+            <strong id="expenseValue">R$ 0,00</strong>
+          </article>
+          <article class="summary-card">
+            <span>Meta mensal</span>
+            <strong id="goalValue">R$ 0,00</strong>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Fluxo</p>
+                <h3>Receitas x despesas</h3>
+              </div>
+            </div>
+            <canvas id="flowChart"></canvas>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Distribuição</p>
+                <h3>Despesas por categoria</h3>
+              </div>
+            </div>
+            <canvas id="categoryChart"></canvas>
+          </article>
+        </div>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Movimentações</p>
+              <h3>Últimos lançamentos</h3>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody id="recentTransactions"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="lancamentos" class="page-section">
+        <article class="panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Controle</p>
+              <h3>Todos os lançamentos</h3>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th>Tipo</th>
+                  <th>Valor</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="allTransactions"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section id="metas" class="page-section">
+        <div id="goalsList" class="goals-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="transactionModal">
+    <form id="transactionForm" method="dialog">
+      <div class="modal-heading">
+        <div>
+          <p class="eyebrow">Novo lançamento</p>
+          <h3>Registrar movimentação</h3>
+        </div>
+        <button type="button" class="icon-button" id="closeModalButton">×</button>
+      </div>
+
+      <label>
+        Descrição
+        <input id="description" name="description" required placeholder="Ex.: Cliente Atlas Hotel" />
+      </label>
+
+      <div class="form-grid">
+        <label>
+          Tipo
+          <select id="type" name="type" required>
+            <option value="receita">Receita</option>
+            <option value="despesa">Despesa</option>
+          </select>
+        </label>
+
+        <label>
+          Categoria
+          <select id="category" name="category" required>
+            <option value="Serviços">Serviços</option>
+            <option value="Assinaturas">Assinaturas</option>
+            <option value="Infraestrutura">Infraestrutura</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Alimentação">Alimentação</option>
+            <option value="Outros">Outros</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-grid">
+        <label>
+          Valor
+          <input id="amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0,00" />
+        </label>
+
+        <label>
+          Data
+          <input id="date" name="date" type="date" required />
+        </label>
+      </div>
+
+      <button class="primary-button full-width" type="submit">Salvar lançamento</button>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
