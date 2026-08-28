@@ -50,5 +50,29 @@
       "current": 850,
       "deadline": "Dezembro/2026"
     }
+  ],
+  "bills": [
+    {
+      "id": 101,
+      "description": "Mensalidade de cliente",
+      "type": "receber",
+      "category": "Serviços",
+      "amount": 149,
+      "dueDate": "2026-08-30",
+      "phone": "",
+      "status": "aberta",
+      "createdAt": "2026-08-28"
+    },
+    {
+      "id": 102,
+      "description": "Hospedagem mensal",
+      "type": "pagar",
+      "category": "Infraestrutura",
+      "amount": 89.9,
+      "dueDate": "2026-09-02",
+      "phone": "",
+      "status": "aberta",
+      "createdAt": "2026-08-28"
+    }
   ]
 }
