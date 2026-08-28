@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Painel de finanças pessoais e empresariais do Gustavo." />
+  <meta name="description" content="Painel financeiro simples para receitas, despesas, contas, agenda e WhatsApp." />
   <title>Gustavo Finanças | Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,12 +14,14 @@
       <div>
         <p class="eyebrow">GPS.dev</p>
         <h1>Gustavo Finanças</h1>
-        <p class="sidebar-copy">Painel simples para controlar receitas, despesas, metas e fluxo financeiro.</p>
+        <p class="sidebar-copy">Portal financeiro interno para operação simples e acompanhamento diário.</p>
       </div>
 
       <nav class="menu">
         <button class="menu-item active" data-section="dashboard">Dashboard</button>
         <button class="menu-item" data-section="lancamentos">Lançamentos</button>
+        <button class="menu-item" data-section="contas">Contas</button>
+        <button class="menu-item" data-section="agenda">Agenda</button>
         <button class="menu-item" data-section="metas">Metas</button>
       </nav>
 
@@ -34,158 +36,104 @@
           <p class="eyebrow">Finanças pessoais + empresa</p>
           <h2 id="pageTitle">Visão geral</h2>
         </div>
-        <button class="primary-button" id="newTransactionButton">+ Novo lançamento</button>
+        <div class="topbar-actions">
+          <button class="secondary-button" id="newBillButton">+ Nova conta</button>
+          <button class="primary-button" id="newTransactionButton">+ Novo lançamento</button>
+        </div>
       </header>
 
       <section id="dashboard" class="page-section active">
         <div class="summary-grid">
-          <article class="summary-card">
-            <span>Saldo atual</span>
-            <strong id="balanceValue">R$ 0,00</strong>
+          <article class="summary-card"><span>Saldo atual</span><strong id="balanceValue">R$ 0,00</strong></article>
+          <article class="summary-card"><span>Receitas</span><strong id="incomeValue">R$ 0,00</strong></article>
+          <article class="summary-card"><span>Despesas</span><strong id="expenseValue">R$ 0,00</strong></article>
+          <article class="summary-card"><span>Meta mensal</span><strong id="goalValue">R$ 0,00</strong></article>
+          <article class="summary-card"><span>A receber</span><strong id="receivableValue">R$ 0,00</strong></article>
+          <article class="summary-card"><span>A pagar</span><strong id="payableValue">R$ 0,00</strong></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">Fluxo</p><h3>Receitas x despesas</h3></div></div>
+            <canvas id="flowChart"></canvas>
           </article>
-          <article class="summary-card">
-            <span>Receitas</span>
-            <strong id="incomeValue">R$ 0,00</strong>
-          </article>
-          <article class="summary-card">
-            <span>Despesas</span>
-            <strong id="expenseValue">R$ 0,00</strong>
-          </article>
-          <article class="summary-card">
-            <span>Meta mensal</span>
-            <strong id="goalValue">R$ 0,00</strong>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">Distribuição</p><h3>Despesas por categoria</h3></div></div>
+            <canvas id="categoryChart"></canvas>
           </article>
         </div>
 
         <div class="dashboard-grid">
           <article class="panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Fluxo</p>
-                <h3>Receitas x despesas</h3>
-              </div>
-            </div>
-            <canvas id="flowChart"></canvas>
+            <div class="panel-heading"><div><p class="eyebrow">Próximos dias</p><h3>Agenda financeira</h3></div></div>
+            <div id="dashboardAgenda" class="agenda-list"></div>
           </article>
-
           <article class="panel">
-            <div class="panel-heading">
-              <div>
-                <p class="eyebrow">Distribuição</p>
-                <h3>Despesas por categoria</h3>
-              </div>
-            </div>
-            <canvas id="categoryChart"></canvas>
+            <div class="panel-heading"><div><p class="eyebrow">Pendências</p><h3>Contas em aberto</h3></div></div>
+            <div id="dashboardBills" class="agenda-list"></div>
           </article>
         </div>
 
         <article class="panel">
-          <div class="panel-heading">
-            <div>
-              <p class="eyebrow">Movimentações</p>
-              <h3>Últimos lançamentos</h3>
-            </div>
-          </div>
+          <div class="panel-heading"><div><p class="eyebrow">Movimentações</p><h3>Últimos lançamentos</h3></div></div>
           <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Descrição</th>
-                  <th>Categoria</th>
-                  <th>Tipo</th>
-                  <th>Valor</th>
-                </tr>
-              </thead>
-              <tbody id="recentTransactions"></tbody>
-            </table>
+            <table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th></tr></thead><tbody id="recentTransactions"></tbody></table>
           </div>
         </article>
       </section>
 
       <section id="lancamentos" class="page-section">
         <article class="panel">
-          <div class="panel-heading">
-            <div>
-              <p class="eyebrow">Controle</p>
-              <h3>Todos os lançamentos</h3>
-            </div>
-          </div>
+          <div class="panel-heading"><div><p class="eyebrow">Controle</p><h3>Todos os lançamentos</h3></div></div>
           <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Descrição</th>
-                  <th>Categoria</th>
-                  <th>Tipo</th>
-                  <th>Valor</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="allTransactions"></tbody>
-            </table>
+            <table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Tipo</th><th>Valor</th><th></th></tr></thead><tbody id="allTransactions"></tbody></table>
           </div>
         </article>
       </section>
 
-      <section id="metas" class="page-section">
-        <div id="goalsList" class="goals-grid"></div>
+      <section id="contas" class="page-section">
+        <div class="section-toolbar">
+          <div><p class="eyebrow">Contas a pagar / receber</p><h3>Compromissos financeiros</h3></div>
+          <select id="billFilter"><option value="abertas">Em aberto</option><option value="todas">Todas</option><option value="pagar">A pagar</option><option value="receber">A receber</option></select>
+        </div>
+        <div id="billsList" class="cards-list"></div>
       </section>
+
+      <section id="agenda" class="page-section">
+        <article class="panel">
+          <div class="panel-heading"><div><p class="eyebrow">Agenda inteligente</p><h3>Prioridades por vencimento</h3></div></div>
+          <div id="agendaList" class="agenda-list"></div>
+        </article>
+      </section>
+
+      <section id="metas" class="page-section"><div id="goalsList" class="goals-grid"></div></section>
     </main>
   </div>
 
   <dialog id="transactionModal">
     <form id="transactionForm" method="dialog">
-      <div class="modal-heading">
-        <div>
-          <p class="eyebrow">Novo lançamento</p>
-          <h3>Registrar movimentação</h3>
-        </div>
-        <button type="button" class="icon-button" id="closeModalButton">×</button>
-      </div>
-
-      <label>
-        Descrição
-        <input id="description" name="description" required placeholder="Ex.: Cliente Atlas Hotel" />
-      </label>
-
+      <div class="modal-heading"><div><p class="eyebrow">Novo lançamento</p><h3>Registrar movimentação</h3></div><button type="button" class="icon-button" data-close="transactionModal">×</button></div>
+      <label>Descrição<input id="description" required placeholder="Ex.: Pagamento de cliente" /></label>
       <div class="form-grid">
-        <label>
-          Tipo
-          <select id="type" name="type" required>
-            <option value="receita">Receita</option>
-            <option value="despesa">Despesa</option>
-          </select>
-        </label>
-
-        <label>
-          Categoria
-          <select id="category" name="category" required>
-            <option value="Serviços">Serviços</option>
-            <option value="Assinaturas">Assinaturas</option>
-            <option value="Infraestrutura">Infraestrutura</option>
-            <option value="Marketing">Marketing</option>
-            <option value="Transporte">Transporte</option>
-            <option value="Alimentação">Alimentação</option>
-            <option value="Outros">Outros</option>
-          </select>
-        </label>
+        <label>Tipo<select id="type" required><option value="receita">Receita</option><option value="despesa">Despesa</option></select></label>
+        <label>Categoria<select id="category" required><option>Serviços</option><option>Assinaturas</option><option>Infraestrutura</option><option>Marketing</option><option>Transporte</option><option>Alimentação</option><option>Outros</option></select></label>
       </div>
-
-      <div class="form-grid">
-        <label>
-          Valor
-          <input id="amount" name="amount" type="number" min="0.01" step="0.01" required placeholder="0,00" />
-        </label>
-
-        <label>
-          Data
-          <input id="date" name="date" type="date" required />
-        </label>
-      </div>
-
+      <div class="form-grid"><label>Valor<input id="amount" type="number" min="0.01" step="0.01" required /></label><label>Data<input id="date" type="date" required /></label></div>
       <button class="primary-button full-width" type="submit">Salvar lançamento</button>
+    </form>
+  </dialog>
+
+  <dialog id="billModal">
+    <form id="billForm" method="dialog">
+      <div class="modal-heading"><div><p class="eyebrow">Nova conta</p><h3>Registrar compromisso</h3></div><button type="button" class="icon-button" data-close="billModal">×</button></div>
+      <label>Descrição<input id="billDescription" required placeholder="Ex.: Mensalidade cliente" /></label>
+      <div class="form-grid">
+        <label>Tipo<select id="billType" required><option value="receber">A receber</option><option value="pagar">A pagar</option></select></label>
+        <label>Categoria<select id="billCategory" required><option>Serviços</option><option>Assinaturas</option><option>Infraestrutura</option><option>Marketing</option><option>Fornecedores</option><option>Outros</option></select></label>
+      </div>
+      <div class="form-grid"><label>Valor<input id="billAmount" type="number" min="0.01" step="0.01" required /></label><label>Vencimento<input id="billDueDate" type="date" required /></label></div>
+      <label>WhatsApp do contato (com DDI)<input id="billPhone" inputmode="numeric" placeholder="Ex.: 5564999999999" /></label>
+      <button class="primary-button full-width" type="submit">Salvar conta</button>
     </form>
   </dialog>
 
