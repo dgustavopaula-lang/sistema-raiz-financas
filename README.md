@@ -2,17 +2,26 @@
 
 Painel financeiro simples feito com HTML, CSS e JavaScript puro.
 
-## Objetivo
+## Estado atual
 
-Resolver o controle financeiro inicial do Gustavo e da operação da empresa, com foco em:
+O projeto já evoluiu do primeiro dashboard para uma segunda etapa funcional, ainda sem backend.
 
-- receitas;
-- despesas;
-- saldo;
+Funcionalidades atuais:
+
+- receitas e despesas;
+- saldo financeiro;
 - metas;
-- gráficos;
+- gráficos com Chart.js;
 - histórico de lançamentos;
-- armazenamento local no navegador.
+- contas a pagar;
+- contas a receber;
+- status de contas em aberto e concluídas;
+- agenda financeira automática por vencimento;
+- identificação de contas atrasadas, vencendo hoje e próximas;
+- botão de WhatsApp para contatos cadastrados nas contas;
+- conclusão de uma conta gerando automaticamente o lançamento financeiro correspondente;
+- persistência com localStorage;
+- layout responsivo e mobile-first.
 
 ## Estrutura
 
@@ -27,24 +36,19 @@ gustavo-financas-mvp/
 
 ## Como executar
 
-### Opção recomendada — VS Code + Live Server
+### VS Code + Live Server
 
 1. Abra a pasta no VS Code.
-2. Instale a extensão **Live Server**.
-3. Clique com o botão direito em `index.html`.
-4. Escolha **Open with Live Server**.
+2. Use a extensão Live Server.
+3. Abra `index.html` com Live Server.
 
-O `data.json` funciona melhor por servidor local do que abrindo o HTML diretamente pelo arquivo.
-
-### Outra opção
-
-No terminal, dentro da pasta:
+### Terminal
 
 ```bash
 python3 -m http.server 5500
 ```
 
-Depois abra:
+Depois acesse:
 
 ```text
 http://localhost:5500
@@ -52,31 +56,58 @@ http://localhost:5500
 
 ## Persistência
 
-Na primeira execução, o sistema lê `data.json`.
+Os dados ficam no navegador em:
 
-Depois disso, as alterações feitas pelo usuário são gravadas no `localStorage` do navegador com a chave:
+```text
+gustavo_financas_mvp_v2
+```
+
+O código também migra automaticamente os dados encontrados na chave antiga:
 
 ```text
 gustavo_financas_mvp_v1
 ```
 
-Isso permite usar o sistema sem banco de dados nesta primeira fase.
+O `data.json` é usado como carga inicial quando não existe informação salva no navegador.
 
-## Próximas versões
+## Contas e agenda
 
-- filtros por mês e período;
-- categorias personalizadas;
-- editar lançamentos;
-- contas a pagar e receber;
-- agenda inteligente;
-- lembretes;
-- integração com WhatsApp;
-- exportação CSV/PDF;
-- autenticação;
+Cada conta pode ser definida como:
+
+- `pagar`;
+- `receber`.
+
+A agenda é derivada das contas em aberto e prioriza automaticamente:
+
+1. atrasadas;
+2. vencendo hoje;
+3. vencendo amanhã;
+4. próximos sete dias;
+5. vencimentos futuros.
+
+Ao marcar uma conta como concluída, o sistema gera um lançamento de receita ou despesa automaticamente.
+
+## WhatsApp
+
+Cada conta pode receber um telefone de contato com DDI. Quando houver telefone cadastrado, o sistema gera um link `wa.me` com uma mensagem financeira pré-preenchida.
+
+Nesta fase não existe API oficial do WhatsApp nem envio automático. O usuário confirma o envio no próprio WhatsApp.
+
+## Próxima fase — backend
+
+Somente depois de validar esta etapa local:
+
+- Node.js / Express;
 - PostgreSQL;
-- backend Node.js;
-- multiempresa/multicliente;
-- painel para pequenos clientes.
+- autenticação;
+- usuários e permissões;
+- persistência real no banco;
+- API REST;
+- contas recorrentes;
+- agenda persistente;
+- integração oficial com WhatsApp;
+- exportação CSV/PDF;
+- multiempresa/multicliente.
 
 ## Stack atual
 
@@ -89,4 +120,4 @@ Isso permite usar o sistema sem banco de dados nesta primeira fase.
 
 ## Conceito
 
-MVP interno e mobile-first para validar o fluxo real antes de adicionar backend, autenticação, APIs ou automações.
+Produto interno simples para validar o fluxo financeiro real de uma pequena operação antes de adicionar infraestrutura, banco de dados e integrações externas.
