@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Painel financeiro simples para receitas, despesas, contas, agenda e WhatsApp." />
-  <title>Gustavo Finanças | Dashboard</title>
+  <title>Sistema Raiz Finanças | Dashboard</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#121625" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -13,7 +15,7 @@
     <aside class="sidebar">
       <div>
         <p class="eyebrow">GPS.dev</p>
-        <h1>Gustavo Finanças</h1>
+        <h1>Sistema Raiz Finanças</h1>
         <p class="sidebar-copy">Portal financeiro interno para operação simples e acompanhamento diário.</p>
       </div>
 
@@ -138,5 +140,14 @@
   </dialog>
 
   <script src="app.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./service-worker.js")
+        .catch(erro => console.warn("PWA:", erro));
+    });
+  }
+</script>
 </body>
 </html>
