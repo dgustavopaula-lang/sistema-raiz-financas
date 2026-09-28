@@ -33,23 +33,40 @@ function normalizeData(data = {}) {
 }
 
 async function loadInitialData() {
-  const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_STORAGE_KEY);
+  const stored = localStorage.getItem(STORAGE_KEY) ||
+                 localStorage.getItem(LEGACY_STORAGE_KEY);
 
-  if (stored) {
-    appData = normalizeData(JSON.parse(stored));
+  if (!stored) {
+    appData = { transactions: [], goals: [], bills: [] };
     persistData();
     renderApp();
     return;
   }
 
+  const dadosSalvos = normalizeData(JSON.parse(stored));
+  let demonstracaoOriginal = false;
+
   try {
-    const response = await fetch("./data.json");
-    appData = normalizeData(await response.json());
-    persistData();
-  } catch (error) {
-    console.warn("Não foi possível carregar data.json.", error);
+    const texto = JSON.stringify(dadosSalvos);
+    const bytes = new TextEncoder().encode(texto);
+    const resultado = await crypto.subtle.digest("SHA-256", bytes);
+    const assinatura = Array.from(new Uint8Array(resultado))
+      .map(byte => byte.toString(16).padStart(2, "0"))
+      .join("");
+
+    demonstracaoOriginal = assinatura === "71e90241c08ad2e3cd72d4c472dd0427dfe34ebd889c4dc9ae4af13281ab2302";
+  } catch (erro) {
+    console.warn("Verificação dos dados demonstrativos indisponível.", erro);
   }
 
+  if (demonstracaoOriginal) {
+    localStorage.setItem("raiz_financas_backup_demo_v1", stored);
+    appData = { transactions: [], goals: [], bills: [] };
+  } else {
+    appData = dadosSalvos;
+  }
+
+  persistData();
   renderApp();
 }
 

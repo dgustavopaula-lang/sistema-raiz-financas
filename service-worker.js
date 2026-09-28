@@ -1,4 +1,4 @@
-const CACHE = "raiz-financas-interface-v1";
+const CACHE = "raiz-financas-interface-v2";
 const ARQUIVOS = [
   "./",
   "./index.html",
