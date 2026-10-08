@@ -1,7 +1,7 @@
 {
-  "name": "Sistema Raiz Finanças",
-  "short_name": "Raiz Finanças",
-  "description": "Aplicativo de gestão financeira do Sistema Raiz.",
+  "name": "Gestão Financeira Premium",
+  "short_name": "Gestão Financeira",
+  "description": "Aplicativo Premium para gestão de receitas, despesas, contas e agenda financeira.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
